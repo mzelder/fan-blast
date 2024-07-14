@@ -1,0 +1,26 @@
+body {
+    cursor: none;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#cursor {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+}
+
+#custom-cursor {
+    position: absolute;
+    width: 128px;
+    height: 128px;
+    background-image: url("fan.png");
+    background-size: cover;
+    pointer-events: none;
+    transform: scaleX(-1);
+}
