@@ -15,12 +15,11 @@ body {
     left: 100px;
 }
 
-#custom-cursor {
+#fan {
     position: absolute;
     width: 128px;
     height: 128px;
     background-image: url("fan.png");
     background-size: cover;
     pointer-events: none;
-    transform: scaleX(-1);
 }
