@@ -5,6 +5,8 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    background-image: url(background.jpg);
+    background-size: cover;
 }
 
 #cursor {
@@ -22,4 +24,16 @@ body {
     background-image: url("fan.png");
     background-size: cover;
     pointer-events: none;
+}
+
+.lamp {
+    position: absolute;
+    top: -100px;
+    left: 1000px;
+}
+
+.plant {
+    position: absolute;
+    top: 500px;
+    left: 1040px;
 }

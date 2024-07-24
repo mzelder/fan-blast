@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let body = document.querySelector("body");
-    let cursor = document.querySelector("#cursor");
-    let fan = document.querySelector("#fan");
-
+    const body = document.querySelector("body");
+    const cursor = document.querySelector("#cursor");
+    const fan = document.querySelector("#fan");
+    
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
     const margin = 5;
     const gravity = 0.1;
+    const windForce = 0.5; 
     let velocityY = 0;
+    let velocityX = 0; 
 
     let mouseX = 0;
     let mouseY = 0;
@@ -17,18 +19,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHeight = fan.offsetHeight;
     const fanHalfWidth = fanWidth / 2;
     const fanHalfHeight = fanHeight / 2;
-
-    // Mouse move event listener to update mouse coordinates and fan angle
+    
+    // Update mouse coordinates and fan angle on mouse move
     document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        fanAngle();
+        updateFanPositionAndAngle();
     });
 
     // Update cursor position and apply gravity every 10 milliseconds
     setInterval(() => {
-        // Apply gravity to velocity
+        //moveRow();
+        
+        // Apply gravity
         velocityY += gravity;
+
+        // Check if the fan is under the cursor and apply upward force
+        if (isFanUnderCursor()) {
+            velocityY -= windForce; // Apply wind force upward
+            
+            // Apply horizontal wind force
+            if (fan.offsetLeft < cursor.offsetLeft) {
+                velocityX -= windForce; // Apply wind force to the left
+            } else {
+                velocityX += windForce; // Apply wind force to the right
+            }
+        }
+
+        // Limit velocities to avoid extreme values
+       velocityY = Math.max(-10, Math.min(10, velocityY));
+       velocityX = Math.max(-100, Math.min(100, velocityX));
+
+    //    console.log(`Y: ${velocityY}`);
+    //    console.log(`X: ${velocityX}`);
 
         // Calculate distance between cursor and fan
         let dx = mouseX - cursor.offsetLeft;
@@ -36,12 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         // Define a force multiplier (adjust as needed)
-        let forceMultiplier = 1;
-        
-        console.log(dy);
-        console.log(distance);
-        
-
+        let forceMultiplier = 2;
 
         // Calculate the potential new position of cursor
         let newLeft = cursor.offsetLeft - (dx / distance * forceMultiplier);
@@ -56,8 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 10);
 
-    // Function to calculate fan angle based on cursor position
-    function fanAngle() {
+    // Function to calculate fan angle and update its position
+    function updateFanPositionAndAngle() {
         let angle = Math.atan2(mouseY - cursor.offsetTop, mouseX - cursor.offsetLeft);
         angle = angle * (180 / Math.PI);
 
@@ -65,5 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
         fan.style.left = (mouseX - fanHalfWidth) + 'px';
         fan.style.top = (mouseY - fanHalfHeight) + 'px';
         fan.style.transform = `rotate(${angle}deg)`;
+    }
+
+    // Function to check if the fan is under the cursor
+    function isFanUnderCursor() {
+        let cursorRect = cursor.getBoundingClientRect();
+        let fanRect = fan.getBoundingClientRect();
+
+        let horizontalOverlap = !(cursorRect.right < fanRect.left ||
+                                  cursorRect.left > fanRect.right);
+
+        let verticalAlignment = cursorRect.bottom >= fanRect.top && cursorRect.top <= fanRect.bottom;
+
+        return horizontalOverlap && verticalAlignment;
+    }
+
+    function moveRow() {
+        let newPosition = lamp.offsetLeft - 1;
+        lamp.style.left = newPosition + 'px';
+        plant.style.left = newPosition + 'px';
     }
 });
