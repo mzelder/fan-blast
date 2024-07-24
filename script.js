@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.querySelector("body");
     const cursor = document.querySelector("#cursor");
     const fan = document.querySelector("#fan");
+    const lamp = document.querySelector(".lamp");
+    const plant = document.querySelector(".plant");
     
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update cursor position and apply gravity every 10 milliseconds
     setInterval(() => {
-        //moveRow();
+        updateRow();
         
         // Apply gravity
         velocityY += gravity;
@@ -98,9 +100,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return horizontalOverlap && verticalAlignment;
     }
 
-    function moveRow() {
-        let newPosition = lamp.offsetLeft - 1;
-        lamp.style.left = newPosition + 'px';
-        plant.style.left = newPosition + 'px';
+    function updateRow() {
+        let lampNewPosition = lamp.offsetLeft - 1;
+        console.log(lampNewPosition);
+        let plantNewPosition = plant.offsetLeft - 1;
+     
+        if (lampNewPosition < 0 || plantNewPosition < 0) {
+            console.log("DONE");
+            lamp.style.left = bodyWidth + 'px';
+            plant.style.left = bodyWidth + 40 + 'px';
+        } else {
+            lamp.style.left = lampNewPosition + 'px';
+            plant.style.left = plantNewPosition + 'px';
+        }
     }
 });
