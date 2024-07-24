@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const fan = document.querySelector("#fan");
     const lamp = document.querySelector(".lamp");
     const plant = document.querySelector(".plant");
+    const lampHitBox = document.querySelector(".lamp-hitbox");
+    const plantHitBox = document.querySelector(".plant-hitbox");
     
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
@@ -31,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update cursor position and apply gravity every 10 milliseconds
     setInterval(() => {
-        updateRow();
+        updateCol();
+
         
         // Apply gravity
         velocityY += gravity;
@@ -100,18 +103,23 @@ document.addEventListener("DOMContentLoaded", () => {
         return horizontalOverlap && verticalAlignment;
     }
 
-    function updateRow() {
+    // lamp: 1000px, hitbox: 1150px
+    // plant: 1040px, hitbox 1100px
+    // updating images of the col and hitboxes
+    function updateCol() {
         let lampNewPosition = lamp.offsetLeft - 1;
-        console.log(lampNewPosition);
         let plantNewPosition = plant.offsetLeft - 1;
      
-        if (lampNewPosition < 0 || plantNewPosition < 0) {
-            console.log("DONE");
+        if (lampNewPosition < -400 || plantNewPosition < -400) {
             lamp.style.left = bodyWidth + 'px';
             plant.style.left = bodyWidth + 40 + 'px';
+            lampHitBox.style.left = bodyWidth + 150 + 'px';
+            plantHitBox.style.left = bodyWidth + 60 + 'px';
         } else {
             lamp.style.left = lampNewPosition + 'px';
             plant.style.left = plantNewPosition + 'px';
+            lampHitBox.style.left = lampNewPosition + 150 + 'px';
+            plantHitBox.style.left = plantNewPosition + 60 + 'px';
         }
     }
 });
