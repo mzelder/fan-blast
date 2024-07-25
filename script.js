@@ -2,10 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.querySelector("body");
     const cursor = document.querySelector("#cursor");
     const fan = document.querySelector("#fan");
-    const lamp = document.querySelector(".lamp");
-    const plant = document.querySelector(".plant");
-    const lampHitBox = document.querySelector(".lamp-hitbox");
-    const plantHitBox = document.querySelector(".plant-hitbox");
     
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
@@ -25,6 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfWidth = fanWidth / 2;
     const fanHalfHeight = fanHeight / 2;
     
+    // Create obstacles columns
+    createColumns(5);
+    const lamp = document.querySelectorAll(".lamp");
+    const plant = document.querySelectorAll(".plant");
+    const lampHitBox = document.querySelectorAll(".lamp-hitbox");
+    const plantHitBox = document.querySelectorAll(".plant-hitbox");
+    
     // Update mouse coordinates and fan angle on mouse move
     document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
@@ -32,12 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
         updateFanPositionAndAngle();
     });
 
-    // Update cursor position and apply gravity every 10 milliseconds
     setInterval(() => {
-        updateCol();
-        if (checkColission()) {
-            alert("Game over!");
-        }
+        //updateColumns();
+        
+        // if (checkColission()) {
+        //     alert("Game over!");
+        // }
         
         angle += 10;
         cursor.style.transform = `rotate(${angle}deg)`
@@ -78,10 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Check if the new position exceeds boundaries and adjust if necessary
         if (newLeft >= margin && newLeft + cursor.offsetWidth <= bodyWidth - margin) {
-            cursor.style.left = newLeft + 'px';
+            cursor.style.left = newLeft + "px";
         }
         if (newTop >= margin && newTop + cursor.offsetHeight <= bodyHeight - margin) {
-            cursor.style.top = newTop + 'px';
+            cursor.style.top = newTop + "px";
         }
     }, 10);
 
@@ -91,8 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         angle = angle * (180 / Math.PI);
 
         // Apply rotation to fan
-        fan.style.left = (mouseX - fanHalfWidth) + 'px';
-        fan.style.top = (mouseY - fanHalfHeight) + 'px';
+        fan.style.left = (mouseX - fanHalfWidth) + "px";
+        fan.style.top = (mouseY - fanHalfHeight) + "px";
         fan.style.transform = `rotate(${angle}deg)`;
     }
 
@@ -112,34 +115,64 @@ document.addEventListener("DOMContentLoaded", () => {
     // lamp: 1000px, hitbox: 1150px
     // plant: 1040px, hitbox 1100px
     // updating images of the col and hitboxes
-    function updateCol() {
+    function updateColumns() {
         let lampNewPosition = lamp.offsetLeft - 1;
         let plantNewPosition = plant.offsetLeft - 1;
      
         if (lampNewPosition < -400 || plantNewPosition < -400) {
-            lamp.style.left = bodyWidth + 'px';
-            plant.style.left = bodyWidth + 40 + 'px';
-            lampHitBox.style.left = bodyWidth + 150 + 'px';
-            plantHitBox.style.left = bodyWidth + 60 + 'px';
+            lamp.style.left = bodyWidth + "px";
+            plant.style.left = bodyWidth + 40 + "px";
+            lampHitBox.style.left = bodyWidth + 150 + "px";
+            plantHitBox.style.left = bodyWidth + 60 + "px";
         } else {
-            lamp.style.left = lampNewPosition + 'px';
-            plant.style.left = plantNewPosition + 'px';
-            lampHitBox.style.left = lampNewPosition + 150 + 'px';
-            plantHitBox.style.left = plantNewPosition + 60 + 'px';
+            lamp.style.left = lampNewPosition + "px";
+            plant.style.left = plantNewPosition + "px";
+            lampHitBox.style.left = lampNewPosition + 150 + "px";
+            plantHitBox.style.left = plantNewPosition + 60 + "px";
         }
     }
 
+    // Creating columns that contains plants, lamp and theirs hitboxes
+    function createColumns(size) {
+        let distanceBetween = 0; 
+        for (let i = 0; i < size; i++) { 
+            const plant = document.createElement("img");
+            plant.src = "/plant.png";
+            plant.classList.add("plant");
+            plant.style.left = distanceBetween + 40 + "px";
+            body.appendChild(plant);
+
+            const lamp = document.createElement("img");
+            lamp.src = "/lamp.png";
+            lamp.classList.add("lamp");
+            lamp.style.left = distanceBetween + "px";
+            body.appendChild(lamp);
+
+            const plantHitBox = document.createElement("div");
+            plantHitBox.classList.add("plant-hitbox");
+            plantHitBox.style.left = distanceBetween + 80 + "px";
+            body.appendChild(plantHitBox);
+
+            const lampHitBox = document.createElement("div");
+            lampHitBox.classList.add("lamp-hitbox");
+            lampHitBox.style.left = distanceBetween + 150 + "px";
+            body.appendChild(lampHitBox);
+
+            distanceBetween += 700;
+        }
+    }
+    
+    // Check colisisons for lamps and plants with cursor
     function checkColission() {
         let cursorRect = cursor.getBoundingClientRect();
         let lampRect = lampHitBox.getBoundingClientRect();
         let plantRect = plantHitBox.getBoundingClientRect();
-        // Check for collision with the lamp
+        
         let lampCollision = !(cursorRect.right < lampRect.left ||
             cursorRect.left > lampRect.right ||
             cursorRect.bottom < lampRect.top ||
             cursorRect.top > lampRect.bottom);
 
-        // Check for collision with the plant
         let plantCollision = !(cursorRect.right < plantRect.left ||
             cursorRect.left > plantRect.right ||
             cursorRect.bottom < plantRect.top ||
