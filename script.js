@@ -22,11 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(5);
+    createColumns(3);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
     const plantHitBox = document.querySelectorAll(".plant-hitbox");
+    const items = [lamp, plant, lampHitBox, plantHitBox]
     
     // Update mouse coordinates and fan angle on mouse move
     document.addEventListener("mousemove", (e) => {
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setInterval(() => {
-        //updateColumns();
+        updateColumns(items);
         
         // if (checkColission()) {
         //     alert("Game over!");
@@ -115,20 +116,34 @@ document.addEventListener("DOMContentLoaded", () => {
     // lamp: 1000px, hitbox: 1150px
     // plant: 1040px, hitbox 1100px
     // updating images of the col and hitboxes
-    function updateColumns() {
-        let lampNewPosition = lamp.offsetLeft - 1;
-        let plantNewPosition = plant.offsetLeft - 1;
-     
-        if (lampNewPosition < -400 || plantNewPosition < -400) {
-            lamp.style.left = bodyWidth + "px";
-            plant.style.left = bodyWidth + 40 + "px";
-            lampHitBox.style.left = bodyWidth + 150 + "px";
-            plantHitBox.style.left = bodyWidth + 60 + "px";
+    function updateColumns(items) {
+        items.forEach(array => {
+            if (array[0].classList.contains("plant")) {
+                array.forEach(plant => {
+                    updateItem(plant);
+                });
+            } else if (array[0].classList.contains("lamp")) {
+                array.forEach(lamp => {
+                    updateItem(lamp);
+                });
+            } else if (array[0].classList.contains("plant-hitbox")) {
+                array.forEach(plantHitbox => {
+                    updateItem(plantHitbox);
+                });
+            } else {
+                array.forEach(lampHitbox => {
+                    updateItem(lampHitbox);
+                });
+            }
+        });
+    }
+
+    function updateItem(item) {
+        let newItemPosition = item.offsetLeft - 1;
+        if (newItemPosition < -400) {
+            item.style.left = bodyWidth + "px"; 
         } else {
-            lamp.style.left = lampNewPosition + "px";
-            plant.style.left = plantNewPosition + "px";
-            lampHitBox.style.left = lampNewPosition + 150 + "px";
-            plantHitBox.style.left = plantNewPosition + 60 + "px";
+            item.style.left = newItemPosition + "px";
         }
     }
 
