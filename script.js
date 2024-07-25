@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const windForce = 0.5; 
     let velocityY = 0;
     let velocityX = 0; 
+    let angle = 0;
 
     let mouseX = 0;
     let mouseY = 0;
@@ -34,7 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update cursor position and apply gravity every 10 milliseconds
     setInterval(() => {
         updateCol();
-
+        if (checkColission()) {
+            alert("Game over!");
+        }
+        
+        angle += 10;
+        cursor.style.transform = `rotate(${angle}deg)`
         
         // Apply gravity
         velocityY += gravity;
@@ -121,5 +127,24 @@ document.addEventListener("DOMContentLoaded", () => {
             lampHitBox.style.left = lampNewPosition + 150 + 'px';
             plantHitBox.style.left = plantNewPosition + 60 + 'px';
         }
+    }
+
+    function checkColission() {
+        let cursorRect = cursor.getBoundingClientRect();
+        let lampRect = lampHitBox.getBoundingClientRect();
+        let plantRect = plantHitBox.getBoundingClientRect();
+        // Check for collision with the lamp
+        let lampCollision = !(cursorRect.right < lampRect.left ||
+            cursorRect.left > lampRect.right ||
+            cursorRect.bottom < lampRect.top ||
+            cursorRect.top > lampRect.bottom);
+
+        // Check for collision with the plant
+        let plantCollision = !(cursorRect.right < plantRect.left ||
+            cursorRect.left > plantRect.right ||
+            cursorRect.bottom < plantRect.top ||
+            cursorRect.top > plantRect.bottom);
+
+        return lampCollision || plantCollision;
     }
 });

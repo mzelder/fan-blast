@@ -10,8 +10,7 @@ body {
 }
 
 #cursor {
-    width: 16px;
-    height: 16px;
+    width: 50px;
     position: absolute;
     top: 100px;
     left: 100px;
