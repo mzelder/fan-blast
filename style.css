@@ -10,16 +10,18 @@ body {
 }
 
 #trash {
-    width: 50px;
+    width: 6vh;
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top: 10vh;
+    left: 10vw;
 }
 
 #fan {
     position: absolute;
-    width: 128px;
-    height: 128px;
+    width: 13vh;
+    height: 13vh;
+    top: -50vh;
+    left: 5vh;
     background-image: url("images/fan.png");
     background-size: cover;
     pointer-events: none;
@@ -27,22 +29,21 @@ body {
 
 .lamp {
     position: absolute;
-    top: -100px;
-    left: 1000px;
+    width: 50vh;
+    top: -10vh;
 }
 
 .plant {
     position: absolute;
-    top: 500px;
-    left: 1040px;
+    width: 30vh;
+    top: 50vh;
 }
 
 .lamp-hitbox {
     position: absolute;
-    top: -100px;
-    left: 1150px;
-    height: 480px;
-    width: 200px;
+    top: -10vh;
+    height: 48vh;
+    width: 18vw;
 }
 
 .plant-hitbox {

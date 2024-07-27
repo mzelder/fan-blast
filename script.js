@@ -12,9 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
     let velocityX = 0; 
     let angle = 0;
 
+    const trashSize = 0.03
+    const fanSize = 0.10
+    
     let mouseX = 0;
     let mouseY = 0;
-
+    
+    // Update items sizes initially and every time user resize window
+    //resizeElements();
+    //document.addEventListener("resize", resizeElements);
+    
     // Get half the width and height of the fan
     const fanWidth = fan.offsetWidth;
     const fanHeight = fan.offsetHeight;
@@ -22,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(1);
+    createColumns(2);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -84,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 10);
+    }, 1);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
@@ -151,23 +158,23 @@ document.addEventListener("DOMContentLoaded", () => {
             const plant = document.createElement("img");
             plant.src = "images/plant.png";
             plant.classList.add("plant");
-            plant.style.left = distanceBetween + 40 + "px";
+            plant.style.left = bodyWidth + distanceBetween + 40 + "px";
             body.appendChild(plant);
 
             const lamp = document.createElement("img");
             lamp.src = "images/lamp.png";
             lamp.classList.add("lamp");
-            lamp.style.left = distanceBetween + "px";
+            lamp.style.left = bodyWidth + distanceBetween + "px";
             body.appendChild(lamp);
 
             const plantHitBox = document.createElement("div");
             plantHitBox.classList.add("plant-hitbox");
-            plantHitBox.style.left = distanceBetween + 80 + "px";
+            plantHitBox.style.left = bodyWidth + distanceBetween + 80 + "px";
             body.appendChild(plantHitBox);
 
             const lampHitBox = document.createElement("div");
             lampHitBox.classList.add("lamp-hitbox");
-            lampHitBox.style.left = distanceBetween + 150 + "px";
+            lampHitBox.style.left = bodyWidth + distanceBetween + 150 + "px";
             body.appendChild(lampHitBox);
 
             distanceBetween += 700;
@@ -190,5 +197,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         });
+    }
+
+    function getViewPort() {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+    }
+    
+    function resizeElements() {
+        const { width, height } = getViewPort();
+        
+        trash.style.width = `${width * trashSize}px`;
+
+        fan.style.width = `${width * fanSize}vh`;
+        fan.style.height = `${height * fanSize}vh`;
+        
     }
 });
