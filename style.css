@@ -5,7 +5,7 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-image: url(background.jpg);
+    background-image: url(images/background.jpg);
     background-size: cover;
 }
 
@@ -20,7 +20,7 @@ body {
     position: absolute;
     width: 128px;
     height: 128px;
-    background-image: url("fan.png");
+    background-image: url("images/fan.png");
     background-size: cover;
     pointer-events: none;
 }

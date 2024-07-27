@@ -149,13 +149,13 @@ document.addEventListener("DOMContentLoaded", () => {
         let distanceBetween = 0; 
         for (let i = 0; i < size; i++) { 
             const plant = document.createElement("img");
-            plant.src = "/plant.png";
+            plant.src = "images/plant.png";
             plant.classList.add("plant");
             plant.style.left = distanceBetween + 40 + "px";
             body.appendChild(plant);
 
             const lamp = document.createElement("img");
-            lamp.src = "/lamp.png";
+            lamp.src = "images/lamp.png";
             lamp.classList.add("lamp");
             lamp.style.left = distanceBetween + "px";
             body.appendChild(lamp);
