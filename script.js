@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.querySelector("body");
-    const cursor = document.querySelector("#cursor");
+    const trash = document.querySelector("#trash");
     const fan = document.querySelector("#fan");
     
     const bodyWidth = body.offsetWidth;
@@ -41,17 +41,17 @@ document.addEventListener("DOMContentLoaded", () => {
         checkColission([lampHitBox, plantHitBox]);
 
         angle += 10;
-        cursor.style.transform = `rotate(${angle}deg)`
+        trash.style.transform = `rotate(${angle}deg)`
         
         // Apply gravity
         velocityY += gravity;
 
-        // Check if the fan is under the cursor and apply upward force
-        if (isFanUnderCursor()) {
+        // Check if the fan is under the trash and apply upward force
+        if (isFanUnderTrash()) {
             velocityY -= windForce; // Apply wind force upward
             
             // Apply horizontal wind force
-            if (fan.offsetLeft < cursor.offsetLeft) {
+            if (fan.offsetLeft < trash.offsetLeft) {
                 velocityX -= windForce; // Apply wind force to the left
             } else {
                 velocityX += windForce; // Apply wind force to the right
@@ -65,30 +65,30 @@ document.addEventListener("DOMContentLoaded", () => {
     //    console.log(`Y: ${velocityY}`);
     //    console.log(`X: ${velocityX}`);
 
-        // Calculate distance between cursor and fan
-        let dx = mouseX - cursor.offsetLeft;
-        let dy = mouseY - cursor.offsetTop;
+        // Calculate distance between trash and fan
+        let dx = mouseX - trash.offsetLeft;
+        let dy = mouseY - trash.offsetTop;
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         // Define a force multiplier (adjust as needed)
         let forceMultiplier = 2;
 
-        // Calculate the potential new position of cursor
-        let newLeft = cursor.offsetLeft - (dx / distance * forceMultiplier);
-        let newTop = cursor.offsetTop - (dy / distance * forceMultiplier) + velocityY;
+        // Calculate the potential new position of trash
+        let newLeft = trash.offsetLeft - (dx / distance * forceMultiplier);
+        let newTop = trash.offsetTop - (dy / distance * forceMultiplier) + velocityY;
 
         // Check if the new position exceeds boundaries and adjust if necessary
-        if (newLeft >= margin && newLeft + cursor.offsetWidth <= bodyWidth - margin) {
-            cursor.style.left = newLeft + "px";
+        if (newLeft >= margin && newLeft + trash.offsetWidth <= bodyWidth - margin) {
+            trash.style.left = newLeft + "px";
         }
-        if (newTop >= margin && newTop + cursor.offsetHeight <= bodyHeight - margin) {
-            cursor.style.top = newTop + "px";
+        if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
+            trash.style.top = newTop + "px";
         }
     }, 10);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
-        let angle = Math.atan2(mouseY - cursor.offsetTop, mouseX - cursor.offsetLeft);
+        let angle = Math.atan2(mouseY - trash.offsetTop, mouseX - trash.offsetLeft);
         angle = angle * (180 / Math.PI);
 
         // Apply rotation to fan
@@ -97,15 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
         fan.style.transform = `rotate(${angle}deg)`;
     }
 
-    // Function to check if the fan is under the cursor
-    function isFanUnderCursor() {
-        let cursorRect = cursor.getBoundingClientRect();
+    // Function to check if the fan is under the trash
+    function isFanUnderTrash() {
+        let trashRect = trash.getBoundingClientRect();
         let fanRect = fan.getBoundingClientRect();
 
-        let horizontalOverlap = !(cursorRect.right < fanRect.left ||
-                                  cursorRect.left > fanRect.right);
+        let horizontalOverlap = !(trashRect.right < fanRect.left ||
+                                  trashRect.left > fanRect.right);
 
-        let verticalAlignment = cursorRect.bottom >= fanRect.top && cursorRect.top <= fanRect.bottom;
+        let verticalAlignment = trashRect.bottom >= fanRect.top && trashRect.top <= fanRect.bottom;
 
         return horizontalOverlap && verticalAlignment;
     }
@@ -174,16 +174,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    // Check colisisons for lamps and plants with cursor
+    // Check colisisons for lamps and plants with trash
     function checkColission(arr) {
-        const cursorRect = cursor.getBoundingClientRect();
+        const trashRect = trash.getBoundingClientRect();
         arr.forEach(hitboxes=> {
             hitboxes.forEach(item => { 
                 let itemRect = item.getBoundingClientRect();
-                let itemCollision = !(cursorRect.right < itemRect.left ||
-                    cursorRect.left > itemRect.right ||
-                    cursorRect.bottom < itemRect.top ||
-                    cursorRect.top > itemRect.bottom);
+                let itemCollision = !(trashRect.right < itemRect.left ||
+                    trashRect.left > itemRect.right ||
+                    trashRect.bottom < itemRect.top ||
+                    trashRect.top > itemRect.bottom);
                 
                 if (itemCollision == true) {
                     console.log("HIT!");
