@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(3);
+    createColumns(1);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -38,11 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setInterval(() => {
         updateColumns(items);
-        
-        // if (checkColission()) {
-        //     alert("Game over!");
-        // }
-        
+        checkColission([lampHitBox, plantHitBox]);
+
         angle += 10;
         cursor.style.transform = `rotate(${angle}deg)`
         
@@ -178,21 +175,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Check colisisons for lamps and plants with cursor
-    function checkColission() {
-        let cursorRect = cursor.getBoundingClientRect();
-        let lampRect = lampHitBox.getBoundingClientRect();
-        let plantRect = plantHitBox.getBoundingClientRect();
-        
-        let lampCollision = !(cursorRect.right < lampRect.left ||
-            cursorRect.left > lampRect.right ||
-            cursorRect.bottom < lampRect.top ||
-            cursorRect.top > lampRect.bottom);
-
-        let plantCollision = !(cursorRect.right < plantRect.left ||
-            cursorRect.left > plantRect.right ||
-            cursorRect.bottom < plantRect.top ||
-            cursorRect.top > plantRect.bottom);
-
-        return lampCollision || plantCollision;
+    function checkColission(arr) {
+        const cursorRect = cursor.getBoundingClientRect();
+        arr.forEach(hitboxes=> {
+            hitboxes.forEach(item => { 
+                let itemRect = item.getBoundingClientRect();
+                let itemCollision = !(cursorRect.right < itemRect.left ||
+                    cursorRect.left > itemRect.right ||
+                    cursorRect.bottom < itemRect.top ||
+                    cursorRect.top > itemRect.bottom);
+                
+                if (itemCollision == true) {
+                    console.log("HIT!");
+                }
+            });
+        });
     }
 });
