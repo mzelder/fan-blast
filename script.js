@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
-    const margin = 5;
+    const margin = 100;
     const gravity = 0.1;
     const windForce = 0.5; 
     let velocityY = 0;
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(2);
+    createColumns(4);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -69,9 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
        velocityY = Math.max(-10, Math.min(10, velocityY));
        velocityX = Math.max(-100, Math.min(100, velocityX));
 
-    //    console.log(`Y: ${velocityY}`);
-    //    console.log(`X: ${velocityX}`);
-
         // Calculate distance between trash and fan
         let dx = mouseX - trash.offsetLeft;
         let dy = mouseY - trash.offsetTop;
@@ -91,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 1);
+    }, 5);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
@@ -117,8 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return horizontalOverlap && verticalAlignment;
     }
 
-    // lamp: 1000px, hitbox: 1150px
-    // plant: 1040px, hitbox 1100px
     // updating images of the col and hitboxes
     function updateColumns(items) {
         items.forEach(array => {
@@ -158,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const plant = document.createElement("img");
             plant.src = "images/plant.png";
             plant.classList.add("plant");
-            plant.style.left = bodyWidth + distanceBetween + 40 + "px";
+            plant.style.left = bodyWidth + distanceBetween + "px";
             body.appendChild(plant);
 
             const lamp = document.createElement("img");

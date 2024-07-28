@@ -10,7 +10,7 @@ body {
 }
 
 #trash {
-    width: 6vh;
+    width: 4vh;
     position: absolute;
     top: 10vh;
     left: 10vw;
@@ -18,8 +18,8 @@ body {
 
 #fan {
     position: absolute;
-    width: 13vh;
-    height: 13vh;
+    width: 11vh;
+    height: 11vh;
     top: -50vh;
     left: 5vh;
     background-image: url("images/fan.png");
@@ -29,27 +29,26 @@ body {
 
 .lamp {
     position: absolute;
-    width: 50vh;
-    top: -10vh;
+    width: 35vh;
+    top: -80vh;
 }
 
 .plant {
     position: absolute;
-    width: 30vh;
-    top: 50vh;
+    width: 35vh;
+    top: 35vh;
 }
 
 .lamp-hitbox {
     position: absolute;
-    top: -10vh;
+    top: -20vh;
     height: 48vh;
-    width: 18vw;
+    width: 10vw;
 }
 
 .plant-hitbox {
     position: absolute;
-    top: 550px;
-    left: 1100px;
-    width: 300px;
-    height: 500px;
+    top: 45vh;
+    width: 24vh;
+    height: 100vh;
 }
