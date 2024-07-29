@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(4);
+    createColumns(3);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let distance = Math.sqrt(dx * dx + dy * dy);
 
         // Define a force multiplier (adjust as needed)
-        let forceMultiplier = 2;
+        let forceMultiplier = 5;
 
         // Calculate the potential new position of trash
         let newLeft = trash.offsetLeft - (dx / distance * forceMultiplier);
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 5);
+    }, 10);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
@@ -192,22 +192,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         });
-    }
-
-    function getViewPort() {
-        return {
-            width: window.innerWidth,
-            height: window.innerHeight
-        };
-    }
-    
-    function resizeElements() {
-        const { width, height } = getViewPort();
-        
-        trash.style.width = `${width * trashSize}px`;
-
-        fan.style.width = `${width * fanSize}vh`;
-        fan.style.height = `${height * fanSize}vh`;
-        
     }
 });
