@@ -11,9 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let velocityY = 0;
     let velocityX = 0; 
     let angle = 0;
-
-    const trashSize = 0.03
-    const fanSize = 0.10
     
     let mouseX = 0;
     let mouseY = 0;
@@ -25,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(1);
+    createColumns(4, 130, 500);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -84,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 15);
+    }, 1);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
@@ -143,32 +140,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Creating columns that contains plants, lamp and theirs hitboxes
-    function createColumns(size) {
-        let distanceBetween = 0; 
+    // lamp min: -100vh, max: -50
+    // plant min: 20, max: 70
+    // 120 between lamp and plant 
+    function createColumns(size, distanceBetweenTop, distanceBetweenLeft) {
+        let gap = 0; 
         for (let i = 0; i < size; i++) { 
+            // Placing gaps in rows on random positions 
+            let lampTop = Math.floor(Math.random() * (-50 - -100)) + -100;
+            let plantTop = lampTop + distanceBetweenTop;
+
             const plant = document.createElement("img");
             plant.src = "images/plant.png";
             plant.classList.add("plant");
-            plant.style.left = bodyWidth + distanceBetween + "px";
+            plant.style.left = bodyWidth + gap + "px";
+            plant.style.top = `${plantTop}vh`;
             body.appendChild(plant);
 
             const lamp = document.createElement("img");
             lamp.src = "images/lamp.png";
             lamp.classList.add("lamp");
-            lamp.style.left = bodyWidth + distanceBetween + "px";
+            lamp.style.left = bodyWidth + gap + "px";
+            lamp.style.top = `${lampTop}vh`;
             body.appendChild(lamp);
 
             const plantHitBox = document.createElement("div");
             plantHitBox.classList.add("plant-hitbox");
-            plantHitBox.style.left = bodyWidth + distanceBetween + 80 + "px";
+            plantHitBox.style.left = bodyWidth + gap + 80 + "px";
             body.appendChild(plantHitBox);
 
             const lampHitBox = document.createElement("div");
             lampHitBox.classList.add("lamp-hitbox");
-            lampHitBox.style.left = bodyWidth + distanceBetween + 150 + "px";
+            lampHitBox.style.left = bodyWidth + gap + 150 + "px";
             body.appendChild(lampHitBox);
 
-            distanceBetween += 700;
+            gap += distanceBetweenLeft;
         }
     }
     
