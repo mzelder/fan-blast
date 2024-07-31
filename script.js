@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
-    const margin = 100;
-    const gravity = 0.1;
-    const windForce = 0.5; 
+    const margin = 50;
+    const gravity = 1;
+    const windForce = 3; 
     let velocityY = 0;
     let velocityX = 0; 
     let angle = 0;
@@ -18,10 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let mouseX = 0;
     let mouseY = 0;
     
-    // Update items sizes initially and every time user resize window
-    //resizeElements();
-    //document.addEventListener("resize", resizeElements);
-    
     // Get half the width and height of the fan
     const fanWidth = fan.offsetWidth;
     const fanHeight = fan.offsetHeight;
@@ -29,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const fanHalfHeight = fanHeight / 2;
     
     // Create obstacles columns
-    createColumns(3);
+    createColumns(1);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
@@ -88,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 10);
+    }, 15);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
