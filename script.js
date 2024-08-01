@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // lamp min: -100vh, max: -50
     // plant min: 20, max: 70
     // 120 between lamp and plant 
+    // hitboxes: lamp: +60 plant: +10
     function createColumns(size, distanceBetweenTop, distanceBetweenLeft) {
         let gap = 0; 
         for (let i = 0; i < size; i++) { 
@@ -166,12 +167,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const plantHitBox = document.createElement("div");
             plantHitBox.classList.add("plant-hitbox");
-            plantHitBox.style.left = bodyWidth + gap + 80 + "px";
+            plantHitBox.style.left = bodyWidth + gap + 50 + "px";
+            plantHitBox.style.top = `${plantTop + 10}vh`
             body.appendChild(plantHitBox);
 
             const lampHitBox = document.createElement("div");
             lampHitBox.classList.add("lamp-hitbox");
-            lampHitBox.style.left = bodyWidth + gap + 150 + "px";
+            lampHitBox.style.left = bodyWidth + gap + 110 + "px";
+            lampHitBox.style.top = `${lampTop + 60}vh`
             body.appendChild(lampHitBox);
 
             gap += distanceBetweenLeft;
