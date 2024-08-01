@@ -1,8 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => {
+function startGame() {
     const body = document.querySelector("body");
+
+    createGame(); 
     const trash = document.querySelector("#trash");
     const fan = document.querySelector("#fan");
-    
+
     const bodyWidth = body.offsetWidth;
     const bodyHeight = body.offsetHeight;
     const margin = 50;
@@ -11,24 +13,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let velocityY = 0;
     let velocityX = 0; 
     let angle = 0;
-    
+
     let mouseX = 0;
     let mouseY = 0;
-    
+
     // Get half the width and height of the fan
     const fanWidth = fan.offsetWidth;
     const fanHeight = fan.offsetHeight;
     const fanHalfWidth = fanWidth / 2;
     const fanHalfHeight = fanHeight / 2;
-    
+
     // Create obstacles columns
     createColumns(4, 130, 500);
     const lamp = document.querySelectorAll(".lamp");
     const plant = document.querySelectorAll(".plant");
     const lampHitBox = document.querySelectorAll(".lamp-hitbox");
     const plantHitBox = document.querySelectorAll(".plant-hitbox");
-    const items = [lamp, plant, lampHitBox, plantHitBox]
-    
+    const columns = {};
+    for (let i = 0; i < lamp.length; i++) {
+        columns[i] = {
+            lamp: lamp[i],
+            plant: plant[i], 
+            lampHitbox: lampHitBox[i],
+            plantHitbox :plantHitBox[i] 
+        }
+    }
+
     // Update mouse coordinates and fan angle on mouse move
     document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
@@ -37,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setInterval(() => {
-        updateColumns(items);
+        updateColumns(columns, 130);
         checkColission([lampHitBox, plantHitBox]);
 
         angle += 10;
@@ -59,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Limit velocities to avoid extreme values
-       velocityY = Math.max(-10, Math.min(10, velocityY));
-       velocityX = Math.max(-100, Math.min(100, velocityX));
+        velocityY = Math.max(-10, Math.min(10, velocityY));
+        velocityX = Math.max(-100, Math.min(100, velocityX));
 
         // Calculate distance between trash and fan
         let dx = mouseX - trash.offsetLeft;
@@ -81,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (newTop >= margin && newTop + trash.offsetHeight <= bodyHeight - margin) {
             trash.style.top = newTop + "px";
         }
-    }, 1);
+    }, 5);
 
     // Function to calculate fan angle and update its position
     function updateFanPositionAndAngle() {
@@ -100,43 +110,54 @@ document.addEventListener("DOMContentLoaded", () => {
         let fanRect = fan.getBoundingClientRect();
 
         let horizontalOverlap = !(trashRect.right < fanRect.left ||
-                                  trashRect.left > fanRect.right);
+                                    trashRect.left > fanRect.right);
 
         let verticalAlignment = trashRect.bottom >= fanRect.top && trashRect.top <= fanRect.bottom;
 
         return horizontalOverlap && verticalAlignment;
     }
 
-    // updating images of the col and hitboxes
-    function updateColumns(items) {
-        items.forEach(array => {
-            if (array[0].classList.contains("plant")) {
-                array.forEach(plant => {
-                    updateItem(plant);
-                });
-            } else if (array[0].classList.contains("lamp")) {
-                array.forEach(lamp => {
-                    updateItem(lamp);
-                });
-            } else if (array[0].classList.contains("plant-hitbox")) {
-                array.forEach(plantHitbox => {
-                    updateItem(plantHitbox);
-                });
+    // Updating images of the columns and hitboxes
+    function updateColumns(columns, distanceBetweenTop) { 
+        Object.values(columns).forEach(column => {
+            if (column.plant.offsetLeft < -400) {
+                // LEFT: Reset to the start position
+                column.plant.style.left = bodyWidth + "px";
+                column.lamp.style.left = bodyWidth + "px";
+                column.plantHitbox.style.left = bodyWidth + 50 + "px";
+                column.lampHitbox.style.left = bodyWidth + 110 + "px";
+                
+                // TOP: Choosing new heights
+                let { lampTop, plantTop } = genrateGapsValues(distanceBetweenTop);
+                column.plant.style.top = `${plantTop}vh`;
+                column.lamp.style.top = `${lampTop}vh`;
+                column.plantHitbox.style.top = `${plantTop + 10}vh`;
+                column.lampHitbox.style.top = `${lampTop + 60}vh`;
             } else {
-                array.forEach(lampHitbox => {
-                    updateItem(lampHitbox);
-                });
+                column.plant.style.left = column.plant.offsetLeft - 1 + "px";
+                column.lamp.style.left = column.lamp.offsetLeft - 1 + "px";
+                column.plantHitbox.style.left = column.plantHitbox.offsetLeft - 1 + "px";
+                column.lampHitbox.style.left = column.lampHitbox.offsetLeft - 1 + "px";
             }
         });
     }
+    
+    function createGame() {
+        // Create game elements
+        const fan = document.createElement("div");
+        fan.id = "fan";
+        body.appendChild(fan);
 
-    function updateItem(item) {
-        let newItemPosition = item.offsetLeft - 1;
-        if (newItemPosition < -400) {
-            item.style.left = bodyWidth + "px"; 
-        } else {
-            item.style.left = newItemPosition + "px";
-        }
+        const trash = document.createElement("img");
+        trash.id = "trash";
+        trash.src = "images/trash.png";
+        body.appendChild(trash);
+
+        // Delete UI elements
+        const startDiv = document.querySelector(".center-container");
+        startDiv.style.opacity = 0;
+
+        body.style.cursor = "none";
     }
 
     // Creating columns that contains plants, lamp and theirs hitboxes
@@ -148,8 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let gap = 0; 
         for (let i = 0; i < size; i++) { 
             // Placing gaps in rows on random positions 
-            let lampTop = Math.floor(Math.random() * (-50 - -100)) + -100;
-            let plantTop = lampTop + distanceBetweenTop;
+            let { lampTop, plantTop } = genrateGapsValues(distanceBetweenTop);
 
             const plant = document.createElement("img");
             plant.src = "images/plant.png";
@@ -180,7 +200,12 @@ document.addEventListener("DOMContentLoaded", () => {
             gap += distanceBetweenLeft;
         }
     }
-    
+
+    function genrateGapsValues(distanceBetweenGaps) {
+        let lampTopValue = Math.floor(Math.random() * (-50 - -100)) + -100 
+        return { lampTop: lampTopValue, plantTop: lampTopValue + distanceBetweenGaps }
+    }
+
     // Check colisisons for lamps and plants with trash
     function checkColission(arr) {
         const trashRect = trash.getBoundingClientRect();
@@ -198,4 +223,4 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-});
+}
