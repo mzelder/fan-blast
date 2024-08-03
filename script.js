@@ -229,6 +229,6 @@ function endGame() {
         localStorage.setItem("highScore", highScore);
         highestScoreElement.innerText = `Highest Score: ${highScore}`;
     }
-
+    // Reset 
     scoreValue = 0;
 }
