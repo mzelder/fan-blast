@@ -57,7 +57,6 @@ body {
     flex-direction: column; /* Stack items vertically */
     align-items: center; /* Center items horizontally */
     justify-content: center; /* Center items vertically */
-    height: 100%;
   }
   
   .center-container img {
@@ -65,13 +64,14 @@ body {
   }
   
   .play-button {
-    margin-right: 5vw;
+    height: 10vh;
+    margin-right: 5vh;
     background: rgba(34, 178, 20, 0.8); /* Semi-transparent gradient */
     border: none;
     border-radius: 50px;
     padding: 15px 40px;
     color: white;
-    font-size: 40px;
+    font-size: 5vh;
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
@@ -89,3 +89,17 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly lighter shadow on click */
   }
   
+  #score {
+    position: absolute;
+    top: 0px;
+    left: 90vw;
+    font-size: 30px;
+    color: white;
+  }
+
+  #highest-score {
+    color: white;
+    font-weight: bold;
+    font-size: 3vh;
+    margin-right: 5vh;
+  }
